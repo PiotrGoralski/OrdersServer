@@ -8,18 +8,17 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Getter
 @Setter
 @NoArgsConstructor
 public class OrderDTO implements Serializable {
 
-    private UUID id;
+    private Long id;
     private LocalDateTime creationDate;
     private OrderStatus status;
     private String description;
-    private UUID userId;
+    private Long userId;
 
     public OrderDTO(Order order) {
         super();

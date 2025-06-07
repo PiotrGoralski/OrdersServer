@@ -7,10 +7,9 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @Repository
-public interface OrderRepository extends CrudRepository<Order, UUID> {
+public interface OrderRepository extends CrudRepository<Order, Long> {
 
     List<Order> findAll();
     List<Order> findAllByStatus(OrderStatus status);

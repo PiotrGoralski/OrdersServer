@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 @Controller
 @RequestMapping("/orders")
@@ -40,8 +39,8 @@ public class OrderController {
         return ResponseEntity.ok(orderService.fetchOrdersCreatedBetween(dateFrom, dateTo).stream().map(OrderDTO::new).toList());
     }
 
-    @PutMapping("/{orderId}/close")
-    public ResponseEntity<OrderDTO> closeOrder(@PathVariable UUID orderId) {
+    @DeleteMapping("/{orderId}")
+    public ResponseEntity<OrderDTO> closeOrder(@PathVariable Long orderId) {
         return ResponseEntity.ok(new OrderDTO(orderService.closeOrder(orderId)));
     }
 }

@@ -11,11 +11,9 @@ import goralski.piotr.com.orders.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 import static goralski.piotr.com.orders.kafka.KafkaMessageProducer.CLOSED_ORDERS_TOPIC;
 import static goralski.piotr.com.orders.kafka.KafkaMessageProducer.CREATED_ORDERS_TOPIC;
@@ -31,7 +29,6 @@ public class OrderService {
     @Autowired
     private UserRepository userRepository;
 
-    @Transactional
     public Order createOrder(OrderCreationRequestDTO orderData) {
         User user = userRepository.findById(orderData.getUserId()).orElseThrow();
 
@@ -47,11 +44,15 @@ public class OrderService {
         return order;
     }
 
-    @Transactional
-    public Order closeOrder(UUID orderId) {
+    public Order closeOrder(Long orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow();
+
+        if(order.getStatus().equals(OrderStatus.CLOSED)) {
+            throw new RuntimeException("Order " + order.getId() + " is already closed");
+        }
+
         order.setStatus(OrderStatus.CLOSED);
-        orderRepository.save(order);
+        order = orderRepository.save(order);
 
         kafkaMessageProducer.sendMessage(
             CLOSED_ORDERS_TOPIC,
