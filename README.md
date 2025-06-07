@@ -9,6 +9,8 @@ REST API zawiera endpointy do:
 - Pobierania przefiltrowanej listy zamówień względem daty początkowej i końcowej (GET /orders?dateFrom=2025-06-06T20:00:00&dateTo=2025-06-07T21:00:00)
 - Zamykania zamówienia (DELETE /orders/{orderId})
 
+Plik "Orders REST API" zawiera kolekcje postmanową do przetestowania REST API.
+
 Server wysyła wiadomości na kafkę otworzoną na porcie 9092.
 Nowa wiadomość jest wysyłana na topic created-orders przy tworzeniu nowego zamówienia.
 Nowa wiadomość jest wysyłana na topic closed-orders przy zamykaniu zamówienia. 
